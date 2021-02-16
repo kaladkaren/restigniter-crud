@@ -5,15 +5,56 @@
       <div class="col-lg-12">
         <section class="panel">
           <header class="panel-heading">
-            Administrators
+            Reports
             <?php if ($flash_msg = $this->session->flash_msg): ?>
               <br><sub style="color: <?php echo $flash_msg['color'] ?>"><?php echo $flash_msg['message'] ?></sub>
             <?php endif; ?>
           </header>
           <div class="panel-body">
-            <p>
-              <button type="button" class="add-btn btn btn-success btn-sm">Add new</button>
-            </p>
+
+            <div class="row">
+              <div class="col-md-4" style="text-align: left; font-style: bold;">
+                <p><b>Date range filter</b></p>
+              </div>
+              <div class="col-md-4" style="text-align: left; font-style: bold;">
+                <p><b>By Location </b></p>
+              </div>
+              <div class="col-md-4" style="text-align:left">
+                
+              </div>
+            </div>
+
+            <form action="" method="GET">
+              <div class="row">
+                  <div class="col-md-2">
+                      <input type="date" name="from" placeholder="from" class="form-control"
+                      value="<?php echo @$_GET['from'] ?>">
+                  </div>
+                  <div class="col-md-2">
+                      <input type="date" name="to" placeholder="to" class="form-control"
+                      value="<?php echo @$_GET['to'] ?>">
+                  </div>
+                  <div class="col-md-2">
+                    <select name="user_id" class="form-control">
+                      <option value="">Areas</option>
+                      <?php foreach (getAreas($this) as $key => $value): #helpers/custom_helper.php ?>
+                        <option value="<?php echo $value->id ?>">
+                          <?php echo $value->area_name ?>
+                        </option>
+                      <?php endforeach; ?>
+                    </select>
+                  </div>
+
+                  <div class="col-md-3">
+                    <input type="number" min="1" step="1" name="num_buckets" class="form-control" value="<?php echo @$_GET['num_buckets'] ?>" placeholder="No. of Buckets">
+                  </div>
+                  
+                  <div class="col-md-3">
+                      <input type="submit" value="Apply" class="btn btn-info btn-sm">
+                  </div>
+              </div>
+            </form>
+            <hr>
             <div class="table-responsive" style="overflow: hidden; outline: none;" tabindex="1">
               <table class="table table-bordered">
                 <thead>
@@ -21,35 +62,27 @@
                     <th>#</th>
                     <th>Name</th>
                     <th>Email</th>
-                    <th>Contact Number</th>
-                    <th>User Type</th>
-                    <th>Status</th>
-                    <th>Action</th>
+                    <th>Pickup Date</th>
+                    <th>No. of Buckets</th>
+                    <th>Address</th>
+                    <th>Area</th>
+                    <th>Amount</th>
                   </tr>
                 </thead>
                 <tbody>
                   <?php if (count($res) > 0 ): ?>
 
                     <?php $i = 1; foreach ($res as $key => $value): 
-                      $is_disabled = ($value->deleted_at == '1990-01-01 00:00:00') ? false : true;
                     ?>
-                      <tr <?php echo ($is_disabled) ? 'style="opacity:0.5"': '' ?>>
+                      <tr>
                         <th scope="row"><?php echo $i++ ?></th>
                         <td><?php echo $value->name ?></td>
                         <td><?php echo $value->email ?></td>
-                        <td><?php echo $value->contact_num ?></td>
-                        <td><?php echo $value->user_type ?></td>
-                        <td><?php echo $is_disabled ? '❌ Disabled' : '✅ Active' ?></td>
-                        <td>
-                          <?php if (!$is_disabled): ?>
-                          <button type="button"
-                          data-payload='<?php echo json_encode($value, JSON_HEX_APOS|JSON_HEX_QUOT); ?>'
-                          class="edit-row btn btn-info btn-xs">Edit</button>
-                          <button type="button" data-id='<?php echo $value->id; ?>'
-                            class="btn btn-delete btn-danger btn-xs">Delete</button>
-
-                          <?php endif; ?>
-                        </td>
+                        <td><?php echo $value->created_at ?></td>
+                        <td><?php echo $value->num_buckets ?></td>
+                        <td><?php echo $value->address ?></td>
+                        <td>Marikina City</td>
+                        <td>Php. 560.00</td>
                         </tr>
                       <?php endforeach; ?>
 

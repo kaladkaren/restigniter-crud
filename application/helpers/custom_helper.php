@@ -11,3 +11,16 @@ function api_url($class)
 {
   return base_url() . "api/" . strtolower(get_class($class)) . "/";
 }
+
+function getAreas($that)
+{
+  $that->db->order_by('area_name', 'asc');
+  return $that->db->get('areas')->result();
+}
+
+function getStaff($that)
+{
+  $that->db->order_by('name', 'asc');
+  $that->db->where('user_type', 'Staff');
+  return $that->db->get('admin')->result();
+}

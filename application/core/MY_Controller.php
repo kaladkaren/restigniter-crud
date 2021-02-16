@@ -17,7 +17,7 @@ class Admin_core_controller extends CI_Controller
 
   public function wrapper($body, $data = null)
   {
-    if ($this->session->role !== 'administrator') {
+    if ($this->session->user_type !== 'Admin') {
       redirect('cms/login');
     }
 
@@ -29,7 +29,7 @@ class Admin_core_controller extends CI_Controller
 
   public function admin_redirect($param = null)
   {
-    if ($this->session->role !== 'administrator') {
+    if ($this->session->user_type !== 'Admin') {
       redirect('cms/login');
     } else {
       redirect($param);
@@ -46,7 +46,7 @@ class Front_core_controller extends CI_Controller
 
   public function wrapper($body, $data = null,  $sidebar = 'generic')
   {
-    if ($this->session->role !== 'user') {
+    if ($this->session->user_type !== 'user') {
       redirect('login');
     }
 
@@ -58,7 +58,7 @@ class Front_core_controller extends CI_Controller
 
   public function front_redirect($param = null)
   {
-    if ($this->session->role !== 'user') {
+    if ($this->session->user_type !== 'user') {
       redirect('login');
     } else {
       redirect($param);

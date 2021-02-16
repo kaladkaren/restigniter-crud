@@ -5,50 +5,87 @@
       <div class="col-lg-12">
         <section class="panel">
           <header class="panel-heading">
-            Administrators
+            Customers Request
             <?php if ($flash_msg = $this->session->flash_msg): ?>
               <br><sub style="color: <?php echo $flash_msg['color'] ?>"><?php echo $flash_msg['message'] ?></sub>
             <?php endif; ?>
           </header>
           <div class="panel-body">
-            <p>
-              <button type="button" class="add-btn btn btn-success btn-sm">Add new</button>
-            </p>
+            
+            <div class="row">
+              <div class="col-md-4" style="text-align: left; font-style: bold;">
+                <p><b>Date range filter</b></p>
+              </div>
+              <div class="col-md-4" style="text-align: left; font-style: bold;">
+                <p><b>Search Name </b></p>
+              </div>
+              <div class="col-md-4" style="text-align:left">
+                
+              </div>
+            </div>
+
+            <form action="" method="GET">
+              <div class="row">
+                  <div class="col-md-2">
+                      <input type="date" name="from" placeholder="from" class="form-control"
+                      value="<?php echo @$_GET['from'] ?>">
+                  </div>
+                  <div class="col-md-2">
+                      <input type="date" name="to" placeholder="to" class="form-control"
+                      value="<?php echo @$_GET['to'] ?>">
+                  </div>
+                  <div class="col-md-2">
+                    <select name="user_id" class="form-control">
+                      <option value="">Areas</option>
+                      <?php foreach (getAreas($this) as $key => $value): #helpers/custom_helper.php ?>
+                        <option value="<?php echo $value->id ?>">
+                          <?php echo $value->area_name ?>
+                        </option>
+                      <?php endforeach; ?>
+                    </select>
+                  </div>
+
+                  <div class="col-md-3">
+                    <input type="text" min="1" step="1" name="name" class="form-control" value="<?php echo @$_GET['name'] ?>" placeholder="Enter customer name">
+                  </div>
+                  
+                  <div class="col-md-3">
+                      <input type="submit" value="Apply" class="btn btn-info btn-sm">
+                  </div>
+              </div>
+            </form>
+            <hr style="color: green;">
+
             <div class="table-responsive" style="overflow: hidden; outline: none;" tabindex="1">
               <table class="table table-bordered">
                 <thead>
                   <tr>
                     <th>#</th>
                     <th>Name</th>
-                    <th>Email</th>
+                    <th>Email Address</th>
                     <th>Contact Number</th>
-                    <th>User Type</th>
-                    <th>Status</th>
+                    <th>Reward Name</th>
+                    <th>Request Date</th>
                     <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   <?php if (count($res) > 0 ): ?>
 
-                    <?php $i = 1; foreach ($res as $key => $value): 
-                      $is_disabled = ($value->deleted_at == '1990-01-01 00:00:00') ? false : true;
-                    ?>
-                      <tr <?php echo ($is_disabled) ? 'style="opacity:0.5"': '' ?>>
+                    <?php $i = 1; foreach ($res as $key => $value): ?>
+                      <tr>
                         <th scope="row"><?php echo $i++ ?></th>
                         <td><?php echo $value->name ?></td>
                         <td><?php echo $value->email ?></td>
                         <td><?php echo $value->contact_num ?></td>
-                        <td><?php echo $value->user_type ?></td>
-                        <td><?php echo $is_disabled ? '❌ Disabled' : '✅ Active' ?></td>
+                        <td>1 bag of compost</td>
+                        <td>February 10, 2021</td>
                         <td>
-                          <?php if (!$is_disabled): ?>
                           <button type="button"
                           data-payload='<?php echo json_encode($value, JSON_HEX_APOS|JSON_HEX_QUOT); ?>'
                           class="edit-row btn btn-info btn-xs">Edit</button>
                           <button type="button" data-id='<?php echo $value->id; ?>'
                             class="btn btn-delete btn-danger btn-xs">Delete</button>
-
-                          <?php endif; ?>
                         </td>
                         </tr>
                       <?php endforeach; ?>
@@ -85,28 +122,15 @@
               <label>Name</label>
               <input type="text" class="form-control" name="name" placeholder="Name">
             </div>
+
             <div class="form-group">
-              <label >Email address</label>
-              <input type="email" class="form-control" name="email" placeholder="Email">
+              <label >Description</label>
+              <input type="email" class="form-control" name="description" placeholder="Email">
             </div>
+
             <div class="form-group">
-              <label >User Type</label>
-              <select class="form-control" name="user_type">
-                <option>Admin</option>
-                <option>Staff</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label >Contact Number</label>
-              <input type="text" class="form-control" name="contact_num" placeholder="Contact Number">
-            </div>
-            <div class="form-group">
-              <label >Password</label>
-              <input type="password" class="form-control" name="password" placeholder="New Password">
-            </div>
-            <div class="form-group">
-              <label >Confirm Password</label>
-              <input type="password" class="form-control" id="confirm_password" placeholder="Confirm New Password">
+              <label >Points Need</label>
+              <input type="text" class="form-control" name="points_need" placeholder="Contact Number">
             </div>
 
           </div>
@@ -120,5 +144,5 @@
   </div>
   <!-- modal -->
 
-  <script src="<?php echo base_url('public/admin/js/custom/') ?>admin_management.js"></script>
+  <script src="<?php echo base_url('public/admin/js/custom/') ?>rewards_management.js"></script>
   <script src="<?php echo base_url('public/admin/js/custom/') ?>generic.js"></script>

@@ -16,6 +16,45 @@ class Admin_core_model extends CI_model {
     $this->per_page = 15;
   }
 
+  public function paginate()
+  {
+    $page = $this->input->get('page') ?: 1;
+    if ($page){
+      $per_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : $this->per_page; # Make 10 default $per_page if $per_page is not set
+      $offset = ($page - 1) * $per_page;
+      $this->db->limit($per_page, $offset);
+    }
+  }
+
+  public function squery($like_arr)
+  {
+    $squery = $this->input->get('squery');
+    if($squery) {
+
+      if (count($like_arr) > 0) { # if more than 1 columns
+        $like_str = "(";
+        foreach ($like_arr as $key => $value) {
+          $like_str .= "LOWER($value) LIKE '%$squery%'";
+
+          if ($value !== end($like_arr)) {
+             $like_str .= " OR ";
+          } else {
+             $like_str .= ")";
+          }
+        }
+
+        $this->db->where("$like_str");
+      } else {
+        foreach ($like_arr as $key => $value) {
+          $this->db->or_like("LOWER($value)", strtolower($squery));
+        }
+      }
+    } else {
+      return false; #do nthing
+    }
+
+  }
+
   public function getTotalPages()
   {
     return ceil(count($this->db->get($this->table)->result()) / $this->per_page);
@@ -29,7 +68,8 @@ class Admin_core_model extends CI_model {
 
   public function add($data)
   {
-    return $this->db->insert($this->table, $data);
+    $this->db->insert($this->table, $data);
+    return $this->db->insert_id();
   }
 
   public function get($id)

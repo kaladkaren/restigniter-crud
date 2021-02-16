@@ -19,39 +19,27 @@
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Contact Number</th>
-                    <th>User Type</th>
-                    <th>Status</th>
+                    <th>Area Name</th>
                     <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   <?php if (count($res) > 0 ): ?>
 
-                    <?php $i = 1; foreach ($res as $key => $value): 
-                      $is_disabled = ($value->deleted_at == '1990-01-01 00:00:00') ? false : true;
-                    ?>
-                      <tr <?php echo ($is_disabled) ? 'style="opacity:0.5"': '' ?>>
+                    <?php $i = 1; foreach ($res as $key => $value): ?>
+                      <tr>
                         <th scope="row"><?php echo $i++ ?></th>
-                        <td><?php echo $value->name ?></td>
-                        <td><?php echo $value->email ?></td>
-                        <td><?php echo $value->contact_num ?></td>
-                        <td><?php echo $value->user_type ?></td>
-                        <td><?php echo $is_disabled ? '❌ Disabled' : '✅ Active' ?></td>
+                        <td><?php echo $value->area_name ?></td>
+                        
                         <td>
-                          <?php if (!$is_disabled): ?>
                           <button type="button"
                           data-payload='<?php echo json_encode($value, JSON_HEX_APOS|JSON_HEX_QUOT); ?>'
                           class="edit-row btn btn-info btn-xs">Edit</button>
                           <button type="button" data-id='<?php echo $value->id; ?>'
                             class="btn btn-delete btn-danger btn-xs">Delete</button>
-
-                          <?php endif; ?>
                         </td>
                         </tr>
-                      <?php endforeach; ?>
+                    <?php endforeach; ?>
 
 
                     <?php else: ?>
@@ -76,37 +64,14 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Manage</h4>
+          <h4 class="modal-title">Area Manage</h4>
         </div>
         <div class="modal-body">
 
           <form id="main-form" role="form" method="post">
             <div class="form-group">
-              <label>Name</label>
+              <label>Area Name</label>
               <input type="text" class="form-control" name="name" placeholder="Name">
-            </div>
-            <div class="form-group">
-              <label >Email address</label>
-              <input type="email" class="form-control" name="email" placeholder="Email">
-            </div>
-            <div class="form-group">
-              <label >User Type</label>
-              <select class="form-control" name="user_type">
-                <option>Admin</option>
-                <option>Staff</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label >Contact Number</label>
-              <input type="text" class="form-control" name="contact_num" placeholder="Contact Number">
-            </div>
-            <div class="form-group">
-              <label >Password</label>
-              <input type="password" class="form-control" name="password" placeholder="New Password">
-            </div>
-            <div class="form-group">
-              <label >Confirm Password</label>
-              <input type="password" class="form-control" id="confirm_password" placeholder="Confirm New Password">
             </div>
 
           </div>

@@ -5,15 +5,13 @@
       <div class="col-lg-12">
         <section class="panel">
           <header class="panel-heading">
-            Administrators
+            Lists of Cancelled Accounts
             <?php if ($flash_msg = $this->session->flash_msg): ?>
               <br><sub style="color: <?php echo $flash_msg['color'] ?>"><?php echo $flash_msg['message'] ?></sub>
             <?php endif; ?>
           </header>
           <div class="panel-body">
-            <p>
-              <button type="button" class="add-btn btn btn-success btn-sm">Add new</button>
-            </p>
+            
             <div class="table-responsive" style="overflow: hidden; outline: none;" tabindex="1">
               <table class="table table-bordered">
                 <thead>
@@ -22,8 +20,7 @@
                     <th>Name</th>
                     <th>Email</th>
                     <th>Contact Number</th>
-                    <th>User Type</th>
-                    <th>Status</th>
+                    <th>No. of Buckets</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -31,24 +28,21 @@
                   <?php if (count($res) > 0 ): ?>
 
                     <?php $i = 1; foreach ($res as $key => $value): 
-                      $is_disabled = ($value->deleted_at == '1990-01-01 00:00:00') ? false : true;
                     ?>
-                      <tr <?php echo ($is_disabled) ? 'style="opacity:0.5"': '' ?>>
+                      <tr>
                         <th scope="row"><?php echo $i++ ?></th>
                         <td><?php echo $value->name ?></td>
                         <td><?php echo $value->email ?></td>
                         <td><?php echo $value->contact_num ?></td>
-                        <td><?php echo $value->user_type ?></td>
-                        <td><?php echo $is_disabled ? '❌ Disabled' : '✅ Active' ?></td>
+                        <td><?php echo $value->num_buckets ?></td>
                         <td>
-                          <?php if (!$is_disabled): ?>
+                          
                           <button type="button"
                           data-payload='<?php echo json_encode($value, JSON_HEX_APOS|JSON_HEX_QUOT); ?>'
-                          class="edit-row btn btn-info btn-xs">Edit</button>
+                          class="edit-row btn btn-info btn-xs">View</button>
                           <button type="button" data-id='<?php echo $value->id; ?>'
-                            class="btn btn-delete btn-danger btn-xs">Delete</button>
+                            class="btn btn-delete btn-danger btn-xs">Confirm Cancellation</button>
 
-                          <?php endif; ?>
                         </td>
                         </tr>
                       <?php endforeach; ?>
